@@ -74,19 +74,19 @@ Tobias de Abreu Kuse
 - **Título:** *Reinforcement Learning Approach to Solve Dynamic Bi-objective Police Patrol Dispatching and Rescheduling Problem*  
 - **Formulação:** MDP Centralizado de Agente Único.  
 - **Agente de RL:** Planejador central / despachante.  
-- **Atores:** Unidades de patrulha (recursos controlados).  
+- **Recursos:** Unidades de patrulha (recursos controlados).  
 - Não é MARL — unidades não aprendem.
 
 ---
 
 ### O MDP: Estado e Ação
 
-- **Estado ($S_k$):** snapshot do sistema no incidente $\omega_k$.  
+- **Estado ($S_k$):** estado completo do sistema no incidente $\omega_k$.  
   - Hora atual ($t_k$), cronogramas ($\delta(k)$), status de patrulha ($\sigma(k)$).  
 - **Ação ($x_k$):** tupla de decisão $\langle x_k^i, x_k^t, \delta^x(k) \rangle$.  
   - $x_k^i$: quem despachar  
   - $x_k^t$: quando  
-  - $\delta^x(k)$: novo cronograma conjunto  
+  - $\delta^x(k)$: novo cronograma unificado  
 - **Insight:** espaço de ação enorme — decisão global sobre todas as unidades.
 
 ---
@@ -94,7 +94,7 @@ Tobias de Abreu Kuse
 ### A Solução: Híbrido de VFA + Heurística
 
 - **Divisão de trabalho:**  
-  - **Offline (Cérebro):**  
+  - **Offline (Módulo de Decisão):**  
     - Rede de Função Valor $\hat{V}$ treinada offline.  
     - Aprende o valor futuro esperado de cada estado.  
   - **Online (Gerador de Ação):**  
@@ -111,7 +111,7 @@ Tobias de Abreu Kuse
 - **Componentes:**
   - $f_r(x_k)$ → sucesso da resposta (1.0, 0.5, 0)  
   - $f_p(\delta^x(k)) - f_p(\delta(k))$ → mudança na presença da patrulha  
-- **Inteligência:**  
+- **Justificativa da Abordagem:**  
   - A recompensa pondera *resposta* × *impacto na patrulha*.  
   - Uma falha que destrói o plano de patrulha → fortemente penalizada.
 
@@ -119,7 +119,7 @@ Tobias de Abreu Kuse
 
 ### Resultados Chave
 
-- **Joint Learning > Two-Stage**  
+- **Aprendizado Integrado vs. Duas Etapas**  
   - O híbrido ($\hat{V}$ + heurística) supera o método "Two-Stage".  
 - **Computacionalmente Viável:**  
   - Despacho + reagendamento em tempo quase real (<10s).
@@ -130,7 +130,7 @@ Tobias de Abreu Kuse
 
 ### Resumo das Abordagens
 
-- **Problema:** Patrulha Conjunta (Proativa) & Despacho (Reativo).  
+- **Problema:** Patrulha Integrada (Proativa) & Despacho (Reativo).  
 - **Híbrida/Heurística:** poderosa, mas depende de heurísticas (ACO).  
 - **MARL:** baseado em agentes, mas decompõe o problema.  
 - **MORL Centralizado:** abordagem holística (VFA + heurística inteligente).
