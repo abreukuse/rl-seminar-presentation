@@ -6,11 +6,10 @@ paginate: true
 
 # RL Multi-Objetivo Aplicado ao Problema Integrado de Patrulha e Despacho
 
-**Moacir Almeida Simões Júnior & Tobias de Abreu Kuse**
+Moacir Almeida Simões Júnior
+Tobias de Abreu Kuse
 
----
 
-## Parte 1: O Problema e o Panorama das Soluções
 
 ---
 
@@ -76,9 +75,7 @@ paginate: true
 - Vamos analisar o artigo de **Joe, Lau & Pan (2022)**:  
   - Modelo MORL centralizado que **evita soma ponderada**.
 
----
 
-## Parte 2: Estudo de Caso — Joe, Lau & Pan (2022)
 
 ---
 
@@ -137,9 +134,7 @@ paginate: true
 - **Computacionalmente Viável:**  
   - Despacho + reagendamento em tempo quase real (<10s).
 
----
 
-## Parte 3: Conclusão
 
 ---
 
