@@ -39,7 +39,7 @@ Tobias de Abreu Kuse
 - **Conceito:** Modelar o sistema com simulação de eventos discretos.  
 - **Método:**  
   - **Prever:** Usar ML (ex: XGBoost) para prever *hotspots dinâmicos*.  
-  - **Patrulhar:** Usar **ACO** para rotas de patrulha ideais.  
+  - **Patrulhar:** Usar **Otimização por Colônia de Formigas (ACO)** para rotas de patrulha ideais.  
   - **Testar:** Simular interrupções por chamadas aleatórias.  
 - **Conclusão:** Abordagem de *"otimizar e depois simular"*.
 
