@@ -68,19 +68,9 @@ Tobias de Abreu Kuse
 
 ---
 
-### Transição: Uma Abordagem MORL Superior
-
-- As falhas da soma ponderada motivam novos métodos.  
-- Abordagens “conjuntas” (Joe et al., Repasky et al.) resolvem ambos problemas.  
-- Vamos analisar o artigo de **Joe, Lau & Pan (2022)**:  
-  - Modelo MORL centralizado que **evita soma ponderada**.
-
-
-
----
-
 ### Visão Geral e Formulação
 
+- Para contornar as dificuldades da abordagem de soma ponderada, o artigo de **Joe, Lau, & Pan (2022)** apresenta um modelo MORL centralizado que não utiliza essa técnica.
 - **Título:** *Reinforcement Learning Approach to Solve Dynamic Bi-objective Police Patrol Dispatching and Rescheduling Problem*  
 - **Formulação:** MDP Centralizado de Agente Único.  
 - **Agente de RL:** Planejador central / despachante.  
