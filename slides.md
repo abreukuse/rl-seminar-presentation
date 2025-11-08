@@ -2,6 +2,7 @@
 marp: true
 theme: gaia
 paginate: true
+html: true
 ---
 
 # RL Multi-Objetivo Aplicado ao Problema Integrado de Patrulha e Despacho
@@ -33,7 +34,7 @@ Tobias de Abreu Kuse
 
 ---
 
-### Abordagem 1: A Híbrida-Heurística  
+### Abordagem 1: Híbrida-Heurística  
 *(Simões Júnior & Borenstein, 2025)*
 
 - **Conceito:** Modelar o sistema com simulação de eventos discretos.  
@@ -45,7 +46,53 @@ Tobias de Abreu Kuse
 
 ---
 
-### Abordagem 2: O Modelo Multiagente  
+### Abordagem 1: Método e Hotspots Dinâmicos
+
+<style>
+img[alt~="left"] {
+  position: absolute;
+  top: 20%;     /* Distância do topo */
+  left: 2%;      /* Alinha na esquerda */
+  width: 47%;    /* Largura da imagem */
+  height: 70%;   /* Altura máxima */
+  object-fit: contain; /* Previne distorção/corte */
+}
+img[alt~="right"] {
+  position: absolute;
+  top: 20%;     /* Mesma distância do topo */
+  right: 2%;     /* Alinha na direita */
+  width: 47%;    /* Largura da imagem */
+  height: 70%;   /* Altura máxima */
+  object-fit: contain; /* Previne distorção/corte */
+}
+</style>
+
+![left](images/fig1.png)
+![right](images/fig2.png)
+
+---
+
+<!-- ### Abordagem 1: Fluxograma do Método
+
+<style>
+img[alt~="center"] {
+  position: absolute;
+  top: 55%;  /* Ponto central vertical (55% para dar espaço ao título) */
+  left: 50%; /* Ponto central horizontal */
+  transform: translate(-50%, -50%); /* Puxa a imagem de volta pelo seu próprio centro */
+  
+  /* Limites para evitar corte */
+  max-height: 70%; 
+  max-width: 90%;
+  
+  object-fit: contain; /* Mantém a proporção sem distorcer */
+}
+</style>
+
+
+--- -->
+
+### Abordagem 2: Modelo Multiagente  
 *(Repasky et al., 2024)*
 
 - **Conceito:** Cada viatura = um agente de RL.  
@@ -54,6 +101,32 @@ Tobias de Abreu Kuse
   - **$N$ Patrulheiros:** aprendem políticas próprias (DQN compartilhada).  
   - **1 Despachante:** aprende política central (MIP + VFA).  
 - **Conclusão:** Abordagem **descentralizada**, com agentes aprendendo individualmente.
+
+---
+
+### Abordagem 2: Visualização do Modelo MARL
+
+<style>
+img[alt~="left"] {
+  position: absolute;
+  top: 20%;     /* Distância do topo */
+  left: 2%;      /* Alinha na esquerda */
+  width: 47%;    /* Largura da imagem */
+  height: 70%;   /* Altura máxima */
+  object-fit: contain; /* Previne distorção/corte */
+}
+img[alt~="right"] {
+  position: absolute;
+  top: 20%;     /* Mesma distância do topo */
+  right: 2%;     /* Alinha na direita */
+  width: 47%;    /* Largura da imagem */
+  height: 70%;   /* Altura máxima */
+  object-fit: contain; /* Previne distorção/corte */
+}
+</style>
+
+![left](images/fig3.png)
+![right](images/fig4.png)
 
 ---
 
@@ -91,6 +164,27 @@ Tobias de Abreu Kuse
 
 ---
 
+### O MDP: Exemplo de Cronograma Conjunto ($\delta(k)$)
+
+<style>
+img[alt~="center"] {
+  position: absolute;
+  top: 55%;  /* Ponto central vertical (55% para dar espaço ao título) */
+  left: 50%; /* Ponto central horizontal */
+  transform: translate(-50%, -50%); /* Puxa a imagem de volta pelo seu próprio centro */
+  
+  /* Limites para evitar corte */
+  max-height: 70%; 
+  max-width: 90%;
+  
+  object-fit: contain; /* Mantém a proporção sem distorcer */
+}
+</style>
+
+![center](images/fig7.png)
+
+---
+
 ### A Solução: Híbrido de VFA + Heurística
 
 - **Divisão de trabalho:**  
@@ -101,6 +195,27 @@ Tobias de Abreu Kuse
     - Heurística de Reagendamento (Ejection Chains) gera ações viáveis.  
     - $\hat{V}$ avalia cada ação e escolhe:
       $$x_k^* = \text{argmax}_{x_k} \{ R_{imediata} + \gamma \hat{V}(S_k^x) \}$$
+
+---
+
+### A Solução: Arquitetura do Modelo
+
+<style>
+img[alt~="center"] {
+  position: absolute;
+  top: 55%;  /* Ponto central vertical (55% para dar espaço ao título) */
+  left: 50%; /* Ponto central horizontal */
+  transform: translate(-50%, -50%); /* Puxa a imagem de volta pelo seu próprio centro */
+  
+  /* Limites para evitar corte */
+  max-height: 70%; 
+  max-width: 90%;
+  
+  object-fit: contain; /* Mantém a proporção sem distorcer */
+}
+</style>
+
+![center](images/fig5.png)
 
 ---
 
@@ -119,12 +234,31 @@ Tobias de Abreu Kuse
 
 ### Resultados Chave
 
-- **Aprendizado Integrado vs. Duas Etapas**  
-  - O híbrido ($\hat{V}$ + heurística) supera o método "Two-Stage".  
-- **Computacionalmente Viável:**  
-  - Despacho + reagendamento em tempo quase real (<10s).
+- **Desempenho do Aprendizado:**
+  - O modelo "integrado" (Joint) aprende mais rápido e atinge uma recompensa cumulativa maior e mais estável.
+  - O método "Two-Stage" se mostra instável e inferior, especialmente em cenários complexos.
 
+- **Taxa de Sucesso Final:**
+  - O híbrido ($\hat{V}$ + heurística) supera estatisticamente o método "Two-Stage" na taxa de sucesso de resposta.
 
+---
+
+### Resultados: Análise Gráfica
+
+<style>
+img[alt~="left"] {
+  position: absolute; top: 20%; left: 2%;
+  width: 47%; height: 70%; object-fit: contain;
+}
+img[alt~="right"] {
+  position: absolute; top: 20%; right: 2%;
+  width: 47%; height: 70%; object-fit: contain;
+}
+</style>
+
+![left](images/fig8.png)
+
+![right](images/fig6.png)
 
 ---
 
