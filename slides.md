@@ -154,13 +154,16 @@ img[alt~="right"] {
 
 ### O MDP: Estado e Ação
 
-- **Estado ($S_k$):** estado completo do sistema no incidente $\omega_k$.  
-  - Hora atual ($t_k$), cronogramas ($\delta(k)$), status de patrulha ($\sigma(k)$).  
-- **Ação ($x_k$):** tupla de decisão $\langle x_k^i, x_k^t, \delta^x(k) \rangle$.  
-  - $x_k^i$: quem despachar  
-  - $x_k^t$: quando  
-  - $\delta^x(k)$: novo cronograma unificado  
-- **Insight:** espaço de ação enorme — decisão global sobre todas as unidades.
+- **Estado ($S_k$):** É a tupla: $\langle t_k, \delta(k), \sigma(k), \omega_k \rangle$
+  - $t_k$: Hora atual
+  - $\delta(k)$: Cronogramas conjuntos atuais
+  - $\sigma(k)$: Status da patrulha
+  - $\omega_k$: O novo incidente (local, tempo, duração)
+
+- **Ação ($x_k$):** tupla de decisão $\langle x_k^i, x_k^t, \delta^x(k) \rangle$.
+  - $x_k^i$: quem despachar
+  - $x_k^t$: quando
+  - $\delta^x(k)$: novo cronograma unificado
 
 ---
 
@@ -241,7 +244,7 @@ img[alt~="center"] {
 - **Taxa de Sucesso Final:**
   - O híbrido ($\hat{V}$ + heurística) supera estatisticamente o método "Two-Stage" na taxa de sucesso de resposta.
 
----
+<!-- ---
 
 ### Resultados: Análise Gráfica
 
@@ -258,9 +261,9 @@ img[alt~="right"] {
 
 ![left](images/fig8.png)
 
-![right](images/fig6.png)
+![right](images/fig6.png) -->
 
----
+<!-- ---
 
 ### Resumo das Abordagens
 
@@ -276,7 +279,7 @@ img[alt~="right"] {
 - Problema real e ideal para RL avançado.  
 - Arquitetura de Joe, Lau & Pan:  
   - **Gerador-Heurístico + Avaliador-VFA** → ótimo para espaços de ação complexos.  
-- Recompensa multiplicativa → resolve bi-objetivo sem pesos arbitrários.
+- Recompensa multiplicativa → resolve bi-objetivo sem pesos arbitrários. -->
 
 ---
 
