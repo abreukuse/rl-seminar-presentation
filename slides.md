@@ -188,16 +188,47 @@ img[alt~="center"] {
 
 ---
 
-### A Solução: Híbrido de VFA + Heurística
+### MDP: Transição e Recompensa
 
-- **Divisão de trabalho:**  
-  - **Offline (Módulo de Decisão):**  
-    - Rede de Função Valor $\hat{V}$ treinada offline.  
-    - Aprende o valor futuro esperado de cada estado.  
-  - **Online (Gerador de Ação):**  
-    - Heurística de Reagendamento (Ejection Chains) gera ações viáveis.  
-    - $\hat{V}$ avalia cada ação e escolhe:
-      $$x_k^* = \text{argmax}_{x_k} \{ R_{imediata} + \gamma \hat{V}(S_k^x) \}$$
+- **Transição ($S_k \rightarrow S_k^x$):**
+  - A transição do estado é determinística.
+  - A Ação $x_k$ (o novo cronograma $\delta^x(k)$) é aplicada.
+  - O estado muda de "pré-decisão" ($S_k$) para "pós-decisão" ($S_k^x$).
+
+- **Recompensa ($R$): multiplicativa e diferencial**
+    $$R(S_k, x_k) = f_r(x_k) \times (f_p(\delta^x(k)) - f_p(\delta(k)))$$
+  - **Componentes:**
+    - $f_r(x_k) \rightarrow$ Sucesso da Resposta (1.0, 0.5, 0)
+    - $f_p(\delta^x(k)) - f_p(\delta(k)) \rightarrow$ Mudança na Qualidade da Patrulha
+---
+
+### MDP: A Função Objetivo
+
+- O objetivo do agente é encontrar a ação $x_k^*$ que resolve a Equação de Otimização:
+  $$x_k^* = \text{argmax}_{x_k} \{ R(S_k, x_k) + \gamma\hat{V}(S_k^x) \}$$
+
+- **O Desafio Computacional:**
+  - Como resolver este `argmax`?
+  - O espaço de ações $x_k$ (os novos cronogramas) é de alta dimensionalidade (combinatorial).
+  - A solução padrão (ex: DQN, que itera sobre todas as ações) não é aplicável.
+
+---
+
+### A Solução: Arquitetura Híbrida
+
+- O artigo resolve o `argmax` intratável com uma **divisão de trabalho**:
+
+- **1. Gerador de Ações (Online):**
+  - Uma heurística clássica (Ejection Chains) gera um conjunto pequeno de ações $x_k$ (novos cronogramas) que são viáveis e de alta qualidade.
+
+- **2. Avaliador de Ações (Offline):**
+  - Uma Rede de Função Valor ($\hat{V}$) é treinada offline com Dados Históricos (Experience Replay).
+  - O único trabalho desta rede é calcular o valor futuro $\hat{V}(S_k^x)$ (a "nota") para qualquer cronograma.
+
+- **A Decisão (Eq. 6):**
+  - O sistema aplica a heurística para gerar as opções $x_k$.
+  - O $\hat{V}$ treinado avalia (dá a nota) para cada opção.
+  - O agente simplesmente escolhe a opção com a maior nota (Recompensa Imediata + Valor Futuro).
 
 ---
 
