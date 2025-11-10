@@ -95,13 +95,14 @@ section {
 
 *(Repasky et al., 2024)*
 
-- **Conceito:** Cada viatura = um agente de RL.  
-- **Método:**  
-  - Sistema **heterogêneo** com $N+1$ agentes.  
-  - **$N$ Patrulheiros:** aprendem políticas próprias (DQN compartilhada).  
-  - **1 Despachante:** aprende política central (MIP + VFA).  
+- **Conceito:** Cada viatura = um agente de RL.
+- **Método:**
+  - Sistema **heterogêneo** com $N+1$ agentes.
+  - **$N$ Patrulheiros:** aprendem políticas próprias (DQN compartilhada).
+  - **1 Despachante:** aprende a política central usando:
+    - **Programação Inteira Mista (MIP)**
+    - **Aproximação de Função de Valor (VFA)**
 - **Conclusão:** Abordagem **descentralizada**, com agentes aprendendo individualmente.
-
 ---
 
 ### Abordagem 2: Visualização do Modelo MARL
