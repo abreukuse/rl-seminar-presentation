@@ -200,6 +200,7 @@ img[alt~="center"] {
   - **Componentes:**
     - $f_r(x_k) \rightarrow$ Sucesso da Resposta (1.0, 0.5, 0)
     - $f_p(\delta^x(k)) - f_p(\delta(k)) \rightarrow$ Mudança na Qualidade da Patrulha
+
 ---
 
 ### MDP: A Função Objetivo
@@ -207,45 +208,69 @@ img[alt~="center"] {
 - O objetivo do agente é encontrar a ação $x_k^*$ que resolve a Equação de Otimização:
   $$x_k^* = \text{argmax}_{x_k} \{ R(S_k, x_k) + \gamma\hat{V}(S_k^x) \}$$
 
-- **O Desafio Computacional:**
-  - Como resolver este `argmax`?
-  - O espaço de ações $x_k$ (os novos cronogramas) é de alta dimensionalidade (combinatorial).
-  - A solução padrão (ex: DQN, que itera sobre todas as ações) não é aplicável.
+- **A Premissa do Aprendizado (RL):**
+  - Para resolver esta equação, o agente precisa de uma forma de *calcular* o segundo termo.
+  - O **Valor Futuro ($\hat{V}(S_k^x)$)** é desconhecido.
+  - O agente precisa *aprender* a estimar o "valor" de um estado pós-decisão a partir da experiência.
 
 ---
 
-### A Solução: Arquitetura Híbrida
+### Solução: O Avaliador de Ações (VFA)
 
-- O artigo resolve o `argmax` intratável com uma **divisão de trabalho**:
+- O $\hat{V}$ (o "Avaliador") é uma **Rede de Função Valor (VFN)** que estima o Valor Futuro $\hat{V}(S_k^x)$.
 
-- **1. Gerador de Ações (Online):**
-  - Uma heurística clássica (Ejection Chains) gera um conjunto pequeno de ações $x_k$ (novos cronogramas) que são viáveis e de alta qualidade.
+- É treinado **Offline** (antes da execução), usando **Aprendizado por Diferença Temporal (TD Learning)**.
 
-- **2. Avaliador de Ações (Offline):**
-  - Uma Rede de Função Valor ($\hat{V}$) é treinada offline com Dados Históricos (Experience Replay).
-  - O único trabalho desta rede é calcular o valor futuro $\hat{V}(S_k^x)$ (a "nota") para qualquer cronograma.
+- O treinamento utiliza **Dados Históricos** (o princípio do *Experience Replay*).
 
-- **A Decisão (Eq. 6):**
-  - O sistema aplica a heurística para gerar as opções $x_k$.
-  - O $\hat{V}$ treinado avalia (dá a nota) para cada opção.
-  - O agente simplesmente escolhe a opção com a maior nota (Recompensa Imediata + Valor Futuro).
+- **Propósito:** Produzir um "cérebro" treinado que sabe dar a "nota" (o $\hat{V}$) para qualquer novo cronograma.
 
 ---
 
-### A Solução: Arquitetura do Modelo
+### O Avaliador ($\hat{V}$): Diagrama da Rede
 
 <style>
 img[alt~="center"] {
   position: absolute;
-  top: 55%;  /* Ponto central vertical (55% para dar espaço ao título) */
-  left: 50%; /* Ponto central horizontal */
-  transform: translate(-50%, -50%); /* Puxa a imagem de volta pelo seu próprio centro */
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   
-  /* Limites para evitar corte */
-  max-height: 70%; 
-  max-width: 90%;
+  max-height: 80%; 
+  max-width: 95%;
   
-  object-fit: contain; /* Mantém a proporção sem distorcer */
+  object-fit: contain;
+}
+</style>
+
+![center](images/fig11.png)
+
+---
+
+### Solução: O Gerador de Ações - Ejection Chains (EC)
+
+- **Processo (Online):**
+  - 1. A EC *insere* o incidente $\omega_k$ no cronograma de uma Viatura A (criando um "defeito").
+  - 2. A EC *repara* o defeito (ex: "ejetando" uma tarefa de A para B), criando uma "reação em cadeia".
+
+- **Conexão Chave (EC + V̂):**
+  - A $\hat{V}$ é consultada *durante* a cadeia de reparo para guiar a heurística a escolher o melhor reparo ("greedy") a cada passo.
+
+---
+
+### Arquitetura: Treinamento (Offline) e Execução (Online)
+
+<style>
+img[alt~="center"] {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  max-height: 80%; 
+  max-width: 95%;
+  
+  object-fit: contain;
 }
 </style>
 
@@ -253,64 +278,44 @@ img[alt~="center"] {
 
 ---
 
-### Inovação Bi-Objetivo (Sem Soma Ponderada)
+### Pontos para Discussão e Considerações
 
-- Recompensa **multiplicativa e diferencial**:
-  $$R(S_k, x_k) = f_r(x_k) \times f_p(\delta^x(k)) - f_p(\delta(k))$$
-- **Componentes:**
-  - $f_r(x_k)$ → sucesso da resposta (1.0, 0.5, 0)  
-  - $f_p(\delta^x(k)) - f_p(\delta(k))$ → mudança na presença da patrulha  
-- **Justificativa da Abordagem:**  
-  - A recompensa pondera *resposta* × *impacto na patrulha*.  
-  - Uma falha que destrói o plano de patrulha → fortemente penalizada.
-
----
-
-### Resultados Chave
-
-- **Desempenho do Aprendizado:**
-  - O modelo "integrado" (Joint) aprende mais rápido e atinge uma recompensa cumulativa maior e mais estável.
-  - O método "Two-Stage" se mostra instável e inferior, especialmente em cenários complexos.
-
-- **Taxa de Sucesso Final:**
-  - O híbrido ($\hat{V}$ + heurística) supera estatisticamente o método "Two-Stage" na taxa de sucesso de resposta.
-
-<!-- ---
-
-### Resultados: Análise Gráfica
-
-<style>
-img[alt~="left"] {
-  position: absolute; top: 20%; left: 2%;
-  width: 47%; height: 70%; object-fit: contain;
-}
-img[alt~="right"] {
-  position: absolute; top: 20%; right: 2%;
-  width: 47%; height: 70%; object-fit: contain;
+<style scoped>
+section {
+  font-size: 30px; /* O padrão é ~28px. Ajuste 24px para caber (tente 22px, 20px, etc.) */
 }
 </style>
 
-![left](images/fig8.png)
+- **1. Modelo "Agnóstico" à Gravidade:**
+  - A função de recompensa ($R$) trata todos os incidentes da mesma forma (1.0, 0.5, 0 pelo *tempo* de resposta).
+  - Ela não usa uma tabela de prioridade (ex: "Risco à Vida" vs. "Furto").
 
-![right](images/fig6.png) -->
+- **2. Risco da Otimização "Pura":**
+  - O sistema pode (corretamente) decidir *postergar* um incidente grave, se ele tiver um "custo" muito alto para a patrulha (baixa recompensa futura esperada).
 
-<!-- ---
-
-### Resumo das Abordagens
-
-- **Problema:** Patrulha Integrada (Proativa) & Despacho (Reativo).  
-- **Híbrida/Heurística:** poderosa, mas depende de heurísticas (ACO).  
-- **MARL:** baseado em agentes, mas decompõe o problema.  
-- **MORL Centralizado:** abordagem holística (VFA + heurística inteligente).
+- **3. Sugestão de Melhoria:**
+  - Incorporar um **fator de prioridade ($p$)** (baseado na gravidade) diretamente na função de recompensa, como um multiplicador.
 
 ---
 
-### Principais Conclusões
+### Resumo das Abordagens
 
-- Problema real e ideal para RL avançado.  
-- Arquitetura de Joe, Lau & Pan:  
-  - **Gerador-Heurístico + Avaliador-VFA** → ótimo para espaços de ação complexos.  
-- Recompensa multiplicativa → resolve bi-objetivo sem pesos arbitrários. -->
+<style scoped>
+section {
+  font-size: 30px; /* O padrão é ~28px. Ajuste 24px para caber (tente 22px, 20px, etc.) */
+}
+</style>
+
+- **Problema:** Patrulha Integrada (Proativa) & Despacho (Reativo).
+
+- **Híbrida/Heurística (Simões Júnior & Borenstein, 2025):**
+  - Poderosa, mas depende de heurísticas de PO (como ACO) para *construir* a política.
+
+- **MARL Descentralizado (Repasky et al., 2024):**
+  - "Bottom-up". Trata viaturas como agentes, mas *decompõe* o problema (Patrulha vs. Despacho).
+
+- **MORL Centralizado (Joe, Lau, & Pan, 2022):**
+  - Abordagem holística. Usa RL ($\hat{V}$) para *guiar* uma heurística (EC) e resolver o problema unificado.
 
 ---
 
