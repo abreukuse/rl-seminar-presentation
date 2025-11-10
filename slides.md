@@ -126,7 +126,7 @@ img[alt~="right"] {
 </style>
 
 ![left](images/fig3.png)
-![right](images/fig4.png)
+![right](images/fig9.png)
 
 ---
 
