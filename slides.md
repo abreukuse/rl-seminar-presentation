@@ -16,6 +16,12 @@ Tobias de Abreu Kuse
 
 ### O Problema Central: Um Conflito de Objetivos
 
+<style scoped>
+section {
+  font-size: 32px;
+}
+</style>
+
 - Operações policiais têm dois objetivos conflitantes e simultâneos.  
 - **1. Patrulhamento Proativo:** Maximizar a *presença* em áreas de alto risco ("hotspots") para dissuadir o crime.  
 - **2. Despacho Reativo:** Minimizar o *tempo de resposta* a novas chamadas de emergência dinâmicas.  
@@ -35,6 +41,13 @@ Tobias de Abreu Kuse
 ---
 
 ### Abordagem 1: Híbrida-Heurística  
+
+<style scoped>
+section {
+  font-size: 32px;
+}
+</style>
+
 *(Simões Júnior & Borenstein, 2025)*
 
 - **Conceito:** Modelar o sistema com simulação de eventos discretos.  
@@ -72,27 +85,14 @@ img[alt~="right"] {
 
 ---
 
-<!-- ### Abordagem 1: Fluxograma do Método
+### Abordagem 2: Modelo Multiagente  
 
-<style>
-img[alt~="center"] {
-  position: absolute;
-  top: 55%;  /* Ponto central vertical (55% para dar espaço ao título) */
-  left: 50%; /* Ponto central horizontal */
-  transform: translate(-50%, -50%); /* Puxa a imagem de volta pelo seu próprio centro */
-  
-  /* Limites para evitar corte */
-  max-height: 70%; 
-  max-width: 90%;
-  
-  object-fit: contain; /* Mantém a proporção sem distorcer */
+<style scoped>
+section {
+  font-size: 32px;
 }
 </style>
 
-
---- -->
-
-### Abordagem 2: Modelo Multiagente  
 *(Repasky et al., 2024)*
 
 - **Conceito:** Cada viatura = um agente de RL.  
@@ -178,6 +178,12 @@ section {
 
 ### O MDP: Estado e Ação
 
+<style scoped>
+section {
+  font-size: 32px;
+}
+</style>
+
 - **Estado ($S_k$):** É a tupla: $\langle t_k, \delta(k), \sigma(k), \omega_k \rangle$
   - $t_k$: Hora atual
   - $\delta(k)$: Cronogramas conjuntos atuais
@@ -214,6 +220,12 @@ img[alt~="center"] {
 
 ### MDP: Transição e Recompensa
 
+<style scoped>
+section {
+  font-size: 32px;
+}
+</style>
+
 - **Transição ($S_k \rightarrow S_k^x$):**
   - A transição do estado é determinística.
   - A Ação $x_k$ (o novo cronograma $\delta^x(k)$) é aplicada.
@@ -229,6 +241,12 @@ img[alt~="center"] {
 
 ### MDP: A Função Objetivo
 
+<style scoped>
+section {
+  font-size: 32px;
+}
+</style>
+
 - O objetivo do agente é encontrar a ação $x_k^*$ que resolve a Equação de Otimização:
   $$x_k^* = \text{argmax}_{x_k} \{ R(S_k, x_k) + \gamma\hat{V}(S_k^x) \}$$
 
@@ -240,6 +258,12 @@ img[alt~="center"] {
 ---
 
 ### Solução: O Avaliador de Ações (VFA)
+
+<style scoped>
+section {
+  font-size: 32px;
+}
+</style>
 
 - O $\hat{V}$ (o "Avaliador") é uma **Rede de Função Valor (VFN)** que estima o Valor Futuro $\hat{V}(S_k^x)$.
 
