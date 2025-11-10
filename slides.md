@@ -141,9 +141,33 @@ img[alt~="right"] {
 
 ---
 
-### Visão Geral e Formulação
+### MORL: Abordagens Conceituais
 
-- Para contornar as dificuldades da abordagem de soma ponderada, o artigo de **Joe, Lau, & Pan (2022)** apresenta um modelo MORL centralizado que não utiliza essa técnica.
+<style scoped>
+section {
+  font-size: 28px;
+}
+</style>
+
+- **1. Método de Restrições (Constraint-based):**
+  - Otimiza um objetivo principal e trata os outros como **restrições**.
+  - **Exemplo:** "Maximizar a *Resposta* (Objetivo 1), contanto que (Restrição) a *Presença da Patrulha* (Objetivo 2) não caia abaixo de 80%."
+  - **Vantagem:** Mais intuitivo para um gestor definir um desempenho mínimo do que pesos arbitrários.
+
+- **2. Abordagens Vetoriais (Policy/Value-based):**
+  - O agente não aprende um Q-Valor escalar, mas sim um **Q-Vetor**: $\vec{Q}(s, a) = \langle Q_{resposta}, Q_{presença} \rangle$
+  - O objetivo não é encontrar "um" ótimo, mas sim o conjunto de todas as **Soluções de Trade-off** (não é possível melhorar um objetivo sem piorar o outro).
+---
+
+### Estudo de Caso: MORL Aplicado ao Problema Integrado de Patrulhamento e Despacho
+
+<style scoped>
+section {
+  font-size: 32px;
+}
+</style>
+
+- Para contornar as dificuldades da "soma ponderada", o artigo de **Joe, Lau, & Pan (2022)** propõe uma **função de recompensa** que não exige atribuir pesos aos objetivos.
 - **Título:** *Reinforcement Learning Approach to Solve Dynamic Bi-objective Police Patrol Dispatching and Rescheduling Problem*  
 - **Formulação:** MDP Centralizado de Agente Único.  
 - **Agente de RL:** Planejador central / despachante.  
